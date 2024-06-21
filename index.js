@@ -6,8 +6,36 @@ global.constant = require('./helper/Constant');
 const app = express();
 const apiRoutes = require('./routes/api/index')
 const port = parseInt(process.env.PORT) || process.argv[3] || 4000;
-const Psql = require('./db/dbInit')
-Psql.initPSQL()
+const sequelize = require('./db/dbInit')
+// Psql.initPSQL()
+// Import the sequelize object on which 
+// we have defined model. 
+// const sequelize = require('./db/database') 
+	
+// Import the user model we have defined 
+const Users = require('./db/models/Users') 
+	
+// Create all the table defined using 
+// sequelize in Database 
+	
+// Sync all models that are not 
+// already in the database 
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:4204620734.
+sequelize.authenticate().then(() => {
+  console.log('Connection has been established successfully.');
+}).catch(err => {
+  console.error('Unable to connect to the database:', err);
+});
+sequelize.sync().then(() => {
+  console.log('All models were synchronized successfully.');
+}).catch(err => {
+  console.error('Error synchronizing models:', err);
+});
+	
+// Force sync all models 
+// It will drop the table first 
+// and re-create it afterwards 
+// sequelize.sync({force:true})
 
   app.use(express.static(path.join(__dirname, 'public')));
   app.use('/api', apiRoutes)
