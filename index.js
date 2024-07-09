@@ -14,7 +14,9 @@ const sequelize = require('./db/dbInit')
 	
 // Import the user model we have defined 
 require('./db/models/index').createAssociation
-	
+app.use(cors({
+  origin: 'http://localhost:5173'
+}));
 // Create all the table defined using 
 // sequelize in Database 
 	
@@ -40,7 +42,6 @@ sequelize.sync().then(() => {
   app.use(express.static(path.join(__dirname, 'public')));
   app.use('/api', apiRoutes)
   app.use(express.json());
-  app.use(cors());
 
 
 // Suggested code may be subject to a license. Learn more: ~LicenseLog:1092855016.
